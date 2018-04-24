@@ -16,7 +16,8 @@ MongoClient.connect(url, function(err, db) {
     userCollction = con.collection("user");
     activityCollction = con.collection("activitity");
 });
-
+//错误
+//code == 404: err
 var server = app.listen(8888, function() {
     var host = server.address().address;
     var port = server.address().port;
@@ -28,31 +29,66 @@ app.get("/", (req, res) => {
     res.send("hello");
 })
 
-app.get("/newUser", (req, res) => {
+app.get("/newUser", (req, res) => {//400:duplicated
     var doc = {
     	id: req.query.id,
     	name: req.query.name,
     	password: req.query.password,
     	mail: req.query.mail,
     	phone: req.query.phone,
-    	url: req.query.url
+    	url: req.query.url,
+    	organize:[],
+    	join:[]
     }
-    userCollction.insertOne(doc, function(err, res) {
-    	if(err) {es.send({"ok":false, "err":err});}
-    	console.log("newUser:" + req.query.name);
-    	res.send({"ok":true});
-    });
+    userCollction.findOne({id: req.query.id}, function(err, data) {
+    	//check duplication
+    	if(data) {res.send({"ok":false, "code": 400, "err":"duplicated"});return;}
+    	//insert
+    	userCollction.insertOne(doc, function(err, data) {
+    		if(err) {res.send({"ok":false, "code": 404, "err":err});}
+    		console.log("newUser:" + req.query.name);
+    		res.send({"ok":true, "data":doc});
+    	});
+    })
     // userCollction.find({}).toArray(function(err, result) { // 返回集合中所有数据
     //     if (err) throw err;
     //     console.log(result);
     // });
 });
 
-app.get("/newActivity", (req, res) => {
-
+app.get("/newActivity", (req, res) => {//400:non_register, 401:wrong_password
+	var doc = {
+		id: req.query.id,
+		name: req.query.name,
+		info: req.query.info,
+		place: req.query.place,
+		organizer: req.query.oid,
+		start_time: req.query.st,
+		end_time: req.query.et,
+		signup_start_time: req.query.sst,
+		signup_end_time: req.query.set,
+		joins:[]
+	}
+	activityCollction.insertOne(doc, function(err, data){
+		if(err) {res.send({"ok":false, "code":404, "err":err});}
+    	console.log("newActivity:" + req.query.name);
+    	res.send({"ok":true, "data": doc});
+	})
 })
 
-app.get("/test", (req, resp) => {
+app.get("/log", (req, res) => {
+	userCollction.findOne({id: req.query.id}, function(err, data) {
+		if(err) {res.send({"ok":false, "err":err});}
+		else if(data === null) {res.send({"ok":false, "code": 400, "err":"Not register"});}
+		else if(data.password != req.query.password) {
+			res.send({"ok":false, "code":401, "err":"Password invalid"});
+		}
+		else res.send("ok": true, "data":data);
+	})
+})
+
+
+app.get("/test", (req, res) => {
 	// activityCollction.update({"array.id":"1"},{$set:{"array.$.a":false}},function(err, res){
 	// 	activityCollction.find({}).toArray(function(err, result) { // 返回集合中所有数据
  //         		if (err) throw err;
@@ -70,12 +106,12 @@ app.get("/test", (req, resp) => {
  //    		});
  //   		}
 	// )
-	activityCollction.findOne({id:100}, function(err, res) {
+	activityCollction.findOne({id:100}, function(err, data) {
 		var a = [];
-		for(var i = 0; i < res.array.length; i++) {
-			console.log(JSON.stringify(res.array[i]));
-			a.push(res.array[i]["id"]);
+		for(var i = 0; i < data.array.length; i++) {
+			console.log(JSON.stringify(data.array[i]));
+			a.push(data.array[i]["id"]);
 		}
-		resp.send(a);
+		res.send(a);
 	})
 });
