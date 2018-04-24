@@ -83,7 +83,7 @@ app.get("/log", (req, res) => {
 		else if(data.password != req.query.password) {
 			res.send({"ok":false, "code":401, "err":"Password invalid"});
 		}
-		else res.send("ok": true, "data":data);
+		else res.send({"ok": true, "data":data});
 	})
 })
 
