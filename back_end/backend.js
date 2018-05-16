@@ -149,10 +149,6 @@ app.get("/signup", (req, res) => {//未检查重复，待定$addToset
 	activityCollction.updateOne({id:aid},{$push:{joins:{id:uid, signin:false}}}, function() {
 		userCollction.updateOne({id:uid}, {$push:{join: "test2"}}, function() {
 			res.send({"ok": true});
-			userCollction.find({}).toArray(function(err, result) { // 返回集合中所有数据
-         			if (err) throw err;
-         			console.log(JSON.stringify(result));
-   			});
 		})
 	})
 })
