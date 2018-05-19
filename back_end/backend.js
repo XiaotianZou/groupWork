@@ -12,7 +12,7 @@ var activityCollction;
 MongoClient.connect(url, function(err, db) {
  	if (err) throw err;
     console.log('database set up');
-    con = db.db("runoob");
+    con = db.db("test2");
     userCollction = con.collection("user");
     activityCollction = con.collection("activitity");
 });
@@ -95,10 +95,9 @@ app.get("/newActivity", (req, res) => {//400:non_register, 401:wrong_password
 		signup_end_time: req.query.set,
 		joins:[]
 	}
-	var uid = req.query.uid;
 	activityCollction.insertOne(doc, function(err, data){
 		if(err) {res.send({"ok":false, "code":404, "err":err});}
-		userCollction.updateOne({id:req.query.oid}, {$push:{organize: "test2"}}, function() {
+		userCollction.updateOne({id:req.query.oid}, {$push:{organize: req.query.aid}}, function() {
 			console.log("newActivity:" + req.query.name);
     		res.send({"ok":true, "data": doc});
 		})
@@ -147,7 +146,7 @@ app.get("/signup", (req, res) => {//未检查重复，待定$addToset
 	var aid = req.query.aid;
 	var uid = req.query.uid;
 	activityCollction.updateOne({id:aid},{$push:{joins:{id:uid, signin:false}}}, function() {
-		userCollction.updateOne({id:uid}, {$push:{join: "test2"}}, function() {
+		userCollction.updateOne({id:uid}, {$push:{join: aid}}, function() {
 			res.send({"ok": true});
 		})
 	})
@@ -158,6 +157,22 @@ app.get("/signin", (req, res) => {
 	var uid = req.query.uid;
 	activityCollction.updateOne({id:aid, "joins.id": uid},{$set:{"joins.$.signin":true}}, function() {
 		res.send({"ok": true});
+	})
+})
+//获取某人创建的活动
+app.get("/getOneUserOrganize", (req, res) => {
+	var uid = req.query.uid;
+	userCollction.findOne({id:uid}, function(err, data) {
+		if(err) {res.send({"ok":false, "code":404, "err":err});}
+		else res.send({"ok": true, "data":data.organize});
+	})
+})
+//获取某人参与的活动
+app.get("/getOneUserTakein", (req, res) => {
+	var uid = req.query.uid;
+	userCollction.findOne({id:uid}, function(err, data) {
+		if(err) {res.send({"ok":false, "code":404, "err":err});}
+		else res.send({"ok": true, "data":data.join});
 	})
 })
 
