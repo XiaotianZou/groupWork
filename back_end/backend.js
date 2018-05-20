@@ -12,10 +12,40 @@ var activityCollction;
 MongoClient.connect(url, function(err, db) {
  	if (err) throw err;
     console.log('database set up');
-    con = db.db("runoob");
+    con = db.db("test2");
     userCollction = con.collection("user");
     activityCollction = con.collection("activitity");
 });
+
+function init(callback) {
+	var doc = {
+    	id: "id2",
+    	name: "name1",
+    	password: "password",
+    	mail: "mail",
+    	phone: "phone",
+    	url: "url",
+    	organize:["test1"],
+    	join:["test1"]
+    }
+    var doc2 = {
+		id: "aid1",
+		name: "name1",
+		info: "info",
+		place: "gz",
+		organizer: "id1",
+		start_time: "1",
+		end_time: "2",
+		signup_start_time: "3",
+		signup_end_time: "4",
+		joins:[{id:"1", signin:false}, {id:"2", signin:false}]
+	}
+	userCollction.insertOne(doc, function() {
+		activityCollction.insertOne(doc2, function() {
+			callback();
+		})
+	})
+}
 //错误
 //code == 404: err
 var server = app.listen(8888, function() {
@@ -25,7 +55,7 @@ var server = app.listen(8888, function() {
 })
 
 app.get("/", (req, res) => {
-	activityCollction.insertOne({id:100, array:[{id:"1", a:true}, {id:"2", a:true}]});
+	init(function(){console.log("init完成");})
     res.send("hello");
 })
 
@@ -50,15 +80,11 @@ app.get("/newUser", (req, res) => {//400:duplicated
     		res.send({"ok":true, "data":doc});
     	});
     })
-    // userCollction.find({}).toArray(function(err, result) { // 返回集合中所有数据
-    //     if (err) throw err;
-    //     console.log(result);
-    // });
 });
 
 app.get("/newActivity", (req, res) => {//400:non_register, 401:wrong_password
 	var doc = {
-		id: req.query.id,
+		id: req.query.aid,
 		name: req.query.name,
 		info: req.query.info,
 		place: req.query.place,
@@ -71,14 +97,16 @@ app.get("/newActivity", (req, res) => {//400:non_register, 401:wrong_password
 	}
 	activityCollction.insertOne(doc, function(err, data){
 		if(err) {res.send({"ok":false, "code":404, "err":err});}
-    	console.log("newActivity:" + req.query.name);
-    	res.send({"ok":true, "data": doc});
+		userCollction.updateOne({id:req.query.oid}, {$push:{organize: req.query.aid}}, function() {
+			console.log("newActivity:" + req.query.name);
+    		res.send({"ok":true, "data": doc});
+		})
 	})
 })
 
 app.get("/log", (req, res) => {
 	userCollction.findOne({id: req.query.id}, function(err, data) {
-		if(err) {res.send({"ok":false, "err":err});}
+		if(err) {res.send({"ok":false, "code":404, "err":err});}
 		else if(data === null) {res.send({"ok":false, "code": 400, "err":"Not register"});}
 		else if(data.password != req.query.password) {
 			res.send({"ok":false, "code":401, "err":"Password invalid"});
@@ -87,6 +115,66 @@ app.get("/log", (req, res) => {
 	})
 })
 
+app.get("/getOneActivity", (req, res) => {
+	activityCollction.findOne({id:req.query.id}, function(err, data) {
+		if(err) {res.send({"ok":false, "code":404, "err":err});}
+		else res.send({"ok": true, "data":data});
+	})
+})
+app.get("/getOneUser", (req, res) => {
+	userCollction.findOne({id:req.query.id}, function(err, data) {
+		if(err) {res.send({"ok":false, "code":404, "err":err});}
+		else res.send({"ok": true, "data":data});
+	})
+})
+//是否参加
+app.get("/isSignup", (req, res) => {
+	var aid = req.query.aid;
+	var uid = req.query.uid;
+	activityCollction.findOne({id:aid, "joins.id": uid}, function(err, data) {
+		if(err) {res.send({"ok":false, "code":404, "err":err});}
+		else if(data === null) {
+			res.send({"ok": true, "code":400, "data":"Not_signup"});
+		}
+		else {
+			res.send({"ok": true, "code":401, "data":"signup"});
+		}
+	})
+})
+//报名
+app.get("/signup", (req, res) => {//未检查重复，待定$addToset
+	var aid = req.query.aid;
+	var uid = req.query.uid;
+	activityCollction.updateOne({id:aid},{$push:{joins:{id:uid, signin:false}}}, function() {
+		userCollction.updateOne({id:uid}, {$push:{join: aid}}, function() {
+			res.send({"ok": true});
+		})
+	})
+})
+//签到
+app.get("/signin", (req, res) => {
+	var aid = req.query.aid;
+	var uid = req.query.uid;
+	activityCollction.updateOne({id:aid, "joins.id": uid},{$set:{"joins.$.signin":true}}, function() {
+		res.send({"ok": true});
+	})
+})
+//获取某人创建的活动
+app.get("/getOneUserOrganize", (req, res) => {
+	var uid = req.query.uid;
+	userCollction.findOne({id:uid}, function(err, data) {
+		if(err) {res.send({"ok":false, "code":404, "err":err});}
+		else res.send({"ok": true, "data":data.organize});
+	})
+})
+//获取某人参与的活动
+app.get("/getOneUserTakein", (req, res) => {
+	var uid = req.query.uid;
+	userCollction.findOne({id:uid}, function(err, data) {
+		if(err) {res.send({"ok":false, "code":404, "err":err});}
+		else res.send({"ok": true, "data":data.join});
+	})
+})
 
 app.get("/test", (req, res) => {
 	// activityCollction.update({"array.id":"1"},{$set:{"array.$.a":false}},function(err, res){
