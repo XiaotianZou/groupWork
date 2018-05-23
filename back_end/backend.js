@@ -159,6 +159,14 @@ app.get("/signin", (req, res) => {
 		res.send({"ok": true});
 	})
 })
+//获取所有的活动
+app.get("/getAllActivity", (req, res) => {
+	activityCollction.find({}).toArray(function(err, result) { // 返回集合中所有数据
+         	if (err) throw err;
+         	res.send({"ok": true, "data":result});
+    });
+})
+
 //获取某人创建的活动
 app.get("/getOneUserOrganize", (req, res) => {
 	var uid = req.query.uid;
