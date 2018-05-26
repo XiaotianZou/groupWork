@@ -12,7 +12,7 @@ var activityCollction;
 MongoClient.connect(url, function(err, db) {
  	if (err) throw err;
     console.log('database set up');
-    con = db.db("test2");
+    con = db.db("test3");
     userCollction = con.collection("user");
     activityCollction = con.collection("activitity");
 });
@@ -55,7 +55,7 @@ var server = app.listen(8888, function() {
 })
 
 app.get("/", (req, res) => {
-	init(function(){console.log("init完成");})
+	//init(function(){console.log("init完成");})
     res.send("hello");
 })
 
@@ -70,7 +70,7 @@ app.get("/newUser", (req, res) => {//400:duplicated
     	organize:[],
     	join:[]
     }
-    userCollction.findOne({id: req.query.id}, function(err, data) {
+    userCollction.findOne({name: req.query.name}, function(err, data) {
     	//check duplication
     	if(data) {res.send({"ok":false, "code": 400, "err":"duplicated"});return;}
     	//insert
@@ -105,7 +105,7 @@ app.get("/newActivity", (req, res) => {//400:non_register, 401:wrong_password
 })
 
 app.get("/log", (req, res) => {
-	userCollction.findOne({id: req.query.id}, function(err, data) {
+	userCollction.findOne({name: req.query.name}, function(err, data) {
 		if(err) {res.send({"ok":false, "code":404, "err":err});}
 		else if(data === null) {res.send({"ok":false, "code": 400, "err":"Not register"});}
 		else if(data.password != req.query.password) {
@@ -159,6 +159,23 @@ app.get("/signin", (req, res) => {
 		res.send({"ok": true});
 	})
 })
+
+//获取所有用户
+app.get("/getAllUser", (req, res) => {
+	userCollction.find({}).toArray(function(err, result) { // 返回集合中所有数据
+         	if (err) throw err;
+         	res.send({"ok": true, "data":result});
+    });
+})
+
+//获取所有的活动
+app.get("/getAllActivity", (req, res) => {
+	activityCollction.find({}).toArray(function(err, result) { // 返回集合中所有数据
+         	if (err) throw err;
+         	res.send({"ok": true, "data":result});
+    });
+})
+
 //获取某人创建的活动
 app.get("/getOneUserOrganize", (req, res) => {
 	var uid = req.query.uid;
