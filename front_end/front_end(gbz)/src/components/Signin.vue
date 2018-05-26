@@ -3,7 +3,7 @@
     <img class="logo" src='../assets/logo.png'/>
     <form @submit.prevent="submit">
       <div class="row justify-content-center">
-        <input class="col-8" placeholder="用户名" v-model="profile.username"/>
+        <input class="col-8" placeholder="用户名" v-model="profile.id"/>
         <input class="col-8" placeholder="密码" v-model="profile.password"/>
       </div>
       <div class="row justify-content-center">
@@ -16,36 +16,29 @@
 
 <script>
 import crypto from 'crypto'
+// import axios from 'axios'
 export default {
   name: 'Signin',
   data: function () {
     return {
       profile: {
-        username: '',
+        id: '',
         password: ''
       }
     }
   },
   methods: {
     submit: function () {
-      var formData = JSON.stringify(this.profile)
-      console.log(formData)
-      var url = 'http://139.199.59.246:8888/newUser'
-      // post有两个参数
-      // 参数1:请求的路径
-      // 参数2:提交的参数
-      // 提交参数的两种形态:
-      // 1.可以直接传入字符串 name=张三&age=19
-      // 2.可以以对象的形式传入{name:"三",age:19}
-      axios.post(url, formData).then(function(res) {
-        var resData = res.data;
-        console.log(resData);
-        if(resData.status == "0") { //0表示成功，1表示失败    
-          alert(resData.message);
+      var url = 'api/log/'
+      var params = '?id=' + this.profile.id + '&password=' + this.profile.password
+      this.$ajax.get(url + params).then(function (res) {
+        var resData = res.data
+        if (resData.ok) {
+          alert('登陆成功')
         } else {
-          alert(resData.message);
-        } 
-      });
+          console.log(resData)
+        }
+      })
     },
     getmd5: function (password) {
       var md5 = crypto.createHash('md5')
