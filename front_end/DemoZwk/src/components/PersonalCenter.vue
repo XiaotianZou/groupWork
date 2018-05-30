@@ -4,19 +4,31 @@
     <form v-on:submit.prevent="handleSubmit">
       <div class="row justify-content-center">
         <!-- <h2>{{studentName}}</h2> -->
+        <ul>
+        <li>
+        姓名: 
         <input class="col-8" placeholder="姓名" type="text" v-model="studentName"/>
+        </li>
+        <li>
+        学号: 
         <input class="col-8" placeholder="学号" type="number" v-model="studentId"/>
+        </li>
+        <li>
+        邮箱: 
         <input class="col-8" placeholder="邮箱" type="email" v-model="email"/>
+        </li>
+        <li>
+        手机:   
         <input class="col-8" placeholder="手机" type="number" v-model="phone"/>
+        </li>
+        </ul>
       </div>
       <div>
         <ul id="example-1">
           <li v-for="item in items">
-            {{ item.message }}
+            {{ item.name }}
             {{ item.place }}
             {{item.organizer}}
-            {{item.start_time}}
-            {{item.end_time}}
           </li>
         </ul>
       </div>
@@ -46,8 +58,8 @@ export default {
         email: '',
         phone: '',
       items: [
-      {message:'名称',place:'地点',organizer:'组织人',start_time:'开始时间',end_time:'结束时间'},
-      { message: 'Foo',place:'gz',organizer:'zwk',start_time:'5-26',end_time:'5-28' }
+      {name:'名称',place:'地点',organizer:'组织人'},
+      { name: 'Foo',place:'gz',organizer:'zwk'}
       // { message: 'Bar',place:'dd' }
       ]
       
@@ -61,16 +73,14 @@ export default {
       var formData=JSON.stringify(this.profile)
       let routerParams=this.$route.params.data
       // console.log(routerParams)
-      var url = 'api/getAllActivity'
-      this.$ajax.get(url).then(function(res) {
+      var url = 'api/getOneUserTakein/'
+      // routerParams.data.id
+      var params='?uid='+"wzry"
+      this.$ajax.get(url+params).then(function(res) {
         var resData=res.data
+        console.log("------------get one activity")
         console.log(resData)
       })
-      // axios.post(url, formData).then(function (res) {
-      //   var resData=res.data
-      //   console.log(resData)
-
-      // })
     },
     getParams() {
       
@@ -108,6 +118,16 @@ row{
 }
 h1{
   left: 50%;
+}
+li{
+  font-size: 20px;
+  padding-left: 1px;
+}
+ul{
+  list-style-type:none;
+}
+h2{
+  /* font-size: large */
 }
 a, button {
   outline: none;
