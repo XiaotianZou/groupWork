@@ -29,12 +29,16 @@ export default {
   },
   methods: {
     submit: function () {
+      var that=this
       var url = 'api/log/'
       var params = '?id=' + this.profile.id + '&password=' + this.profile.password
       this.$ajax.get(url + params).then(function (res) {
         var resData = res.data
         if (resData.ok) {
           alert('登陆成功')
+          console.log(resData)
+          that.$router.push({name:'PersonalCenter',params:{data:resData}})
+          // that.$router.push({path:'/personalcenter',params:{id:resData.id,name:resData.name,mail:resData.mail,phone:resData.phone}})
         } else {
           console.log(resData)
         }
