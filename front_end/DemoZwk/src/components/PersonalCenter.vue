@@ -24,11 +24,14 @@
         </ul>
       </div>
       <div>
+        <h4>我参加的活动</h4>
         <ul id="example-1">
-          <li v-for="item in items">
-            {{ item.name }}
-            {{ item.place }}
-            {{item.organizer}}
+          <li v-for="item in items" v-bind:key="item.name" >
+            <div class="container">
+           <span class="activityItem">名称： {{ item.name }}</span>
+           <span class="activityItem">地点： {{ item.place }}</span>
+           <span class="activityItem">组织者： {{ item.organizer }}</span>
+           </div>
           </li>
         </ul>
       </div>
@@ -37,7 +40,7 @@
         <a href="/#/signin" class="btn btn-outline-primary" role="button" aria-disabled="true">返回</a>
       </div>
       <div>
-        <button v-on:click="getActivity">getActivityfffuck</button>
+        <!-- <button v-on:click="getActivity">getActivityfffuck</button> -->
         <!-- <a role="button" >获取该用户的活动</a> -->
       </div>
     </form>
@@ -58,8 +61,9 @@ export default {
         email: '',
         phone: '',
       items: [
-      {name:'名称',place:'地点',organizer:'组织人'},
-      { name: 'Foo',place:'gz',organizer:'zwk'}
+      // {name:'名称',place:'地点',organizer:'组织人'},
+      { name: 'Foo',place:'gz',organizer:'zwk'},
+      { name: 'zhuwenkun',place:'zsdx',organizer:'wenkun'}
       // { message: 'Bar',place:'dd' }
       ]
       
@@ -75,7 +79,7 @@ export default {
       // console.log(routerParams)
       var url = 'api/getOneUserTakein/'
       // routerParams.data.id
-      var params='?uid='+"asd"
+      var params='?uid='+"123"
       this.$ajax.get(url+params).then(function(res) {
         var resData=res.data
         console.log("------------get one activity")
@@ -113,13 +117,25 @@ input {
   margin-top: 20px;
   font-size: 20px;
 }
+.container{
+  width:100%;
+  margin: 50px auto;
+  overflow: hidden;
+  border: 1px solid #ccc
+}
 row{
   left: 50%;
 }
 h1{
   left: 50%;
 }
+.activityItem{
+  /* width: 30%; */
+  width: 100%;
+  display: block;
+}
 li{
+  /* width: 30%; */
   font-size: 20px;
   padding-left: 1px;
 }
