@@ -118,12 +118,14 @@ app.get("/log", (req, res) => {
 app.get("/getOneActivity", (req, res) => {
 	activityCollction.findOne({id:req.query.id}, function(err, data) {
 		if(err) {res.send({"ok":false, "code":404, "err":err});}
+		else if(data === null) {res.send({"ok":false, "code":404, "err":"stupid boy"});}
 		else res.send({"ok": true, "data":data});
 	})
 })
 app.get("/getOneUser", (req, res) => {
 	userCollction.findOne({id:req.query.id}, function(err, data) {
 		if(err) {res.send({"ok":false, "code":404, "err":err});}
+		else if(data === null) {res.send({"ok":false, "code":404, "err":"stupid boy"});}
 		else res.send({"ok": true, "data":data});
 	})
 })
@@ -181,6 +183,7 @@ app.get("/getOneUserOrganize", (req, res) => {
 	var uid = req.query.uid;
 	userCollction.findOne({id:uid}, function(err, data) {
 		if(err) {res.send({"ok":false, "code":404, "err":err});}
+		else if(data === null) {res.send({"ok":false, "code":404, "err":"stupid boy"});}
 		else res.send({"ok": true, "data":data.organize});
 	})
 })
@@ -189,6 +192,7 @@ app.get("/getOneUserTakein", (req, res) => {
 	var uid = req.query.uid;
 	userCollction.findOne({id:uid}, function(err, data) {
 		if(err) {res.send({"ok":false, "code":404, "err":err});}
+		else if(data === null) {res.send({"ok":false, "code":404, "err":"stupid boy"});}
 		else res.send({"ok": true, "data":data.join});
 	})
 })
