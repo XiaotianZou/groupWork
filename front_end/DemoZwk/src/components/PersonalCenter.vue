@@ -40,7 +40,7 @@
         <a href="/#/signin" class="btn btn-outline-primary" role="button" aria-disabled="true">返回</a>
       </div>
       <div>
-        <!-- <button v-on:click="getActivity">getActivityfffuck</button> -->
+        <button v-on:click="getActivity">getActivityfffuck</button>
         <!-- <a role="button" >获取该用户的活动</a> -->
       </div>
     </form>
@@ -79,7 +79,7 @@ export default {
       // console.log(routerParams)
       var url = 'api/getOneUserTakein/'
       // routerParams.data.id
-      var params='?uid='+"123"
+      var params='?uid='+"312"
       this.$ajax.get(url+params).then(function(res) {
         var resData=res.data
         console.log("------------get one activity")
