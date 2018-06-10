@@ -76,7 +76,8 @@ export default {
                     let info = $('#display4').val();
                     let place = $('#display3').val();
                     let oid = uid;
-                    let param = '?aid=' + aid + '&name=' + name + '&info=' + info + '&place=' + place + '&oid=' + oid + '&st=' + activity_date + 'et=' + end_activity_date + '&sst=' + signup_date + '&set=' + end_signup_date;
+                    let timestamp = Date.parse(new Date());
+                    let param = '?aid=' + oid + '_' + timestamp + '&name=' + name + '&info=' + info + '&place=' + place + '&oid=' + oid + '&st=' + activity_date + 'et=' + end_activity_date + '&sst=' + signup_date + '&set=' + end_signup_date;
                     this.$ajax.get(url +param).then(function(res) {
                         var resData = res.data
                         console.log(resData)
