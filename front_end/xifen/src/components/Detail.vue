@@ -28,6 +28,17 @@
                     <el-form-item label="活动简介" prop="info">
                         <el-input type="textarea" :rows="3" placeholder="请输入内容" v-model="ruleForm2.info" disabled=true></el-input>
                     </el-form-item>
+                    <el-form-item label="参加成员" prop="member">
+                        <div v-for="iter in memberArr">
+                            <mu-card class="card">
+                                    <img class="pic" src="../assets/avatar.jpg">
+                               
+                                    <p class="iterId">学号：{{ iter.id }}</p>
+                                    <p class="iterSignin">状态：{{ iter.signin  }}</p>
+                               
+                            </mu-card>
+                        </div>
+                    </el-form-item>
                     <el-form-item>
                         <el-button v-if="mode == 0" type="primary" @click="takeIn()">参加</el-button>
                         <el-button v-if="mode == 0" @click="goBack">返回</el-button>
@@ -43,7 +54,7 @@
             </div>
         </mu-card>
         <i class="material-icons back-button" @click="goBack">arrow_back_ios</i>
-        <el-button type="text" @click="open">生成签到二维码</el-button>
+        <el-button type="text" @click="open" v-if="mode == 2">生成签到二维码</el-button>
         <el-dialog
             :visible.sync="show">
             <canvas id = "code" props = 'gcode'></canvas>
@@ -118,10 +129,13 @@ export default {
       return {
         mode: 0,
         aid: '',
+        memberArr: [],
+        arr: [],
         ruleForm2: {
             name: '',
             location: '',
             info: '',
+            member: [],
             addStartTime: '',
             addEndTime: '',
             activityStartTime: '',
@@ -187,8 +201,8 @@ props: {
       open() {
           this.show = true;
           this.$nextTick(function(){
-              QRCode.toCanvas(document.getElementById('code'), 'www.baidu.com');
-            //    QRCode.toCanvas(document.getElementById('code'), 'localhost:3000/qiandao/' + this.$route.params.aid);
+              //QRCode.toCanvas(document.getElementById('code'), 'www.baidu.com');
+                QRCode.toCanvas(document.getElementById('code'), 'http://139.199.59.246:3000/qiandao/' + this.$route.params.aid);
           })
          
       },
@@ -292,6 +306,7 @@ props: {
             .get('/api/getOneActivity?id=' + this.aid)
             .then(res => {
                 if (res.data.ok) {
+                    this.memberArr = []
                     let activity = res.data.data
                     this.ruleForm2.name = activity.name
                     this.ruleForm2.location = activity.place
@@ -300,6 +315,18 @@ props: {
                     this.ruleForm2.addEndTime = activity.end_time
                     this.ruleForm2.activityStartTime = activity.signup_start_time
                     this.ruleForm2.activityEndTime = activity.signup_end_time
+                    this.ruleForm2.member.push(activity.joins)
+                    
+                    for (var i = 0; i < this.ruleForm2.member[0].length; i++) {
+                        this.memberArr.push(this.ruleForm2.member[0][i])
+                        if (this.memberArr[i].signin == false) {
+                            this.memberArr[i].signin = '未签到'
+                        } else {
+                            this.memberArr[i].signin = '签到'
+                        }
+                        
+                    }
+                   
                 }
                 else {
                     alert('fail to create activity')
@@ -308,12 +335,42 @@ props: {
             .catch(err => {
                 console.log(err)
             })
+            
       }
   },
 }
 </script>
 
 <style scoped>
+
+.card {
+    height: 115px;
+}
+
+.pic {
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    right: 35%;
+    top: 5px
+}
+
+.iterId {
+    margin: 0px;
+    position: relative;
+    left: 10%;
+    bottom: 30px;
+}
+
+.iterSignin {
+    margin: 0;
+    position: relative;
+    left: 5%;
+    bottom: 30px;
+}
+
+
 .container {
     margin-top: 20px;
     margin-right:50px;
