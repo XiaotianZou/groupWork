@@ -94,8 +94,12 @@ export default {
     },
 
     created() {
+        if (this.$store.state.isLogin == "") {
+          this.$router.push('/signin')
+      }
         if (this.$route.params.bottomNav)
             this.bottomNav = this.$route.params.bottomNav
+        this.$route.params.uid = this.$store.state.isLogin
         this.fetchData()
         
     },

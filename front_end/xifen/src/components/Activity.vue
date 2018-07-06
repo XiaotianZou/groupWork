@@ -83,9 +83,14 @@ export default {
   },
 
   created() {
+      if (this.$store.state.isLogin == "") {
+          this.$router.push('/signin')
+      }
     if (this.$route.params.activeTab)
         this.activeTab = this.$route.params.activeTab
+    this.$route.params.uid = this.$store.state.isLogin
     this.fetchData()
+    
   },
 
   methods: {

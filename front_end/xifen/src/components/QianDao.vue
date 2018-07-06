@@ -35,6 +35,9 @@ export default {
   },
 
   created() {
+    if (this.$store.state.isLogin == "") {
+          this.$router.push('/signup')
+      }
     let uid = this.$store.state.isLogin;
     let url = '/api/getOneUser';
     let params = '?id=' + uid;
