@@ -149,7 +149,11 @@ export default {
 //       console.log(this.$route.params.activeTab)
 //       console.log(this.$route.params.uid)
 //   },
-
+  created: function() {
+      if (this.$store.state.isLogin == "") {
+          this.$router.push('/signin')
+      }
+  },
   methods: {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
