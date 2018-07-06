@@ -1,80 +1,68 @@
 <template>
     <div>
-        <el-row class="tac">
-            <el-col :span="9">
-                <el-menu class="el-menu-vertical-demo personal" background-color="#545c64" text-color="#fff">
+        <div class="cover">
+            <div class="cover-content">
                 <mu-avatar class="avatar">
                     <img src="../assets/avatar.jpg">
                 </mu-avatar>
-                <el-menu-item index="1" class="left">
-                    <div class="txt">
-                        <i class="material-icons">account_circle</i>
-                        <p class="padding">{{ name }}</p>
+                <div class="txt">
+                    <p class="padding">{{ name }}</p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <el-row class="tac">
+                <el-col :span="24" class="left">
+                    <div v-if="bottomNav == '0'">
+                        <el-table :data="tableData" stripe class="center">
+                            <el-table-column prop="label"></el-table-column>
+                            <el-table-column prop="value"></el-table-column>
+                        </el-table>
                     </div>
-                    <!-- <i class="material-icons"></i>
-                    <span slot="title">{{ name }}</span> -->
-                </el-menu-item>
-                <el-menu-item index="2" class="left">
-                    <div class="txt">
-                        <i class="material-icons">fingerprint</i>
-                        <p class="padding">{{ uid }}</p>
+                    <div v-if="bottomNav == '1'" v-for="activity in orgAtyArr" class="container">
+                        <mu-card>
+                            <mu-card-media>
+                                <img src="../assets/bg.jpg">
+                            </mu-card-media>
+                            <div class="txt">
+                                <i class="material-icons">textsms</i>
+                                <p>{{ activity.name }}</p>
+                            </div>
+                            <div class="txt">
+                                <i class="material-icons">place</i>
+                                <p>{{ activity.place }}</p>
+                            </div>
+                            <mu-float-button @click="detailActivity(activity)" mini class="demo-float-button detail-button" icon="arrow_forward"/>
+                        </mu-card>
                     </div>
-                    
-                    <!-- <i class="material-icons">fingerprint</i>
-                    <span slot="title">{{ uid }}</span> -->
-                </el-menu-item>
-                </el-menu>
-            </el-col>
-            <el-col :span="15" class="left">
-                <div v-if="bottomNav == '0'">
-                    <el-table :data="tableData" stripe class="center">
-                        <el-table-column prop="label"></el-table-column>
-                        <el-table-column prop="value"></el-table-column>
-                    </el-table>
-                </div>
-                <div v-if="bottomNav == '1'" v-for="activity in orgAtyArr" class="container">
-                    <mu-card>
-                        <mu-card-media>
-                            <img src="../assets/bg.jpg">
-                        </mu-card-media>
-                        <div class="txt">
-                            <i class="material-icons">textsms</i>
-                            <p>{{ activity.name }}</p>
-                        </div>
-                        <div class="txt">
-                            <i class="material-icons">place</i>
-                            <p>{{ activity.place }}</p>
-                        </div>
-                        <mu-float-button @click="detailActivity(activity)" mini class="demo-float-button detail-button" icon="arrow_forward"/>
-                    </mu-card>
-                </div>
-                <div v-if="bottomNav == '2'" v-for="activity in tkinAtyArr" class="container">
-                    <mu-card>
-                        <mu-card-media>
-                            <img src="../assets/bg.jpg">
-                        </mu-card-media>
-                        <div class="txt">
-                            <i class="material-icons">textsms</i>
-                            <p>{{ activity.name }}</p>
-                        </div>
-                        <div class="txt">
-                            <i class="material-icons">place</i>
-                            <p>{{ activity.place }}</p>
-                        </div>
-                        <mu-float-button @click="detailActivity(activity)" mini class="demo-float-button detail-button" icon="arrow_forward"/>
-                    </mu-card>
-                </div>
-                <div v-if="bottomNav == '3'">{{toAllActivity()}}</div>
-                <div v-if="bottomNav == '4'">{{toCreate()}}</div>
-            </el-col>
-        </el-row>
-        <mu-bottom-nav :value="bottomNav" shift @change="handleChange" class="bottom-nav">
-            <mu-bottom-nav-item value="0" title="个人中心" icon="perm_identity"/>
-            <mu-bottom-nav-item value="1" title="组织活动" icon="star_rate"/>
-            <mu-bottom-nav-item value="2" title="参加活动" icon="pan_tool"/>
-            <mu-bottom-nav-item value="3" title="查看活动" icon="visibility"/>
-            <mu-bottom-nav-item value="4" title="创建活动" icon="add"/>
-        </mu-bottom-nav>
+                    <div v-if="bottomNav == '2'" v-for="activity in tkinAtyArr" class="container">
+                        <mu-card>
+                            <mu-card-media>
+                                <img src="../assets/bg.jpg">
+                            </mu-card-media>
+                            <div class="txt">
+                                <i class="material-icons">textsms</i>
+                                <p>{{ activity.name }}</p>
+                            </div>
+                            <div class="txt">
+                                <i class="material-icons">place</i>
+                                <p>{{ activity.place }}</p>
+                            </div>
+                            <mu-float-button @click="detailActivity(activity)" mini class="demo-float-button detail-button" icon="arrow_forward"/>
+                        </mu-card>
+                    </div>
+                    <div v-if="bottomNav == '3'">{{toAllActivity()}}</div>
+                    <div v-if="bottomNav == '4'">{{toCreate()}}</div>
+                </el-col>
+            </el-row>
+            <mu-bottom-nav :value="bottomNav" shift @change="handleChange" class="bottom-nav">
+                <mu-bottom-nav-item value="0" title="个人中心" icon="perm_identity"/>
+                <mu-bottom-nav-item value="1" title="组织活动" icon="star_rate"/>
+                <mu-bottom-nav-item value="2" title="参加活动" icon="pan_tool"/>
+                <mu-bottom-nav-item value="3" title="查看活动" icon="visibility"/>
+                <mu-bottom-nav-item value="4" title="创建活动" icon="add"/>
+            </mu-bottom-nav>
+        </div>
     </div>
 </template>
 
@@ -99,15 +87,6 @@ export default {
         this.fetchData()
         
     },
-
-    // beforeRouteLeave(to, from, next) {
-    //   to.params.uid = this.$route.params.uid
-    //   if (this.$route.params.activeTab)
-    //     to.params.activeTab = this.$route.params.activeTab
-    //   if (this.$route.params.bottomNav)
-    //     to.params.bottomNav = this.$route.params.bottomNav
-    //   next()
-    // },
 
     methods: {
         fetchData() {
@@ -207,8 +186,8 @@ export default {
 .avatar {
     margin-top:20px;
     margin-bottom: 10px;
-    width: 80px;
-    height: 80px;
+    width: 200px;
+    height: 200px;
 }
 
 .container {
@@ -256,9 +235,23 @@ p {
 }
 
 .txt {
-    margin-top: 10px;
+    margin-top: 20px;
     margin-left: 10px;
     height: 30px;
+    font-size: 60px;
+    color: white;
+    font-weight: bold;
 }
 
+.cover {
+    background-color: #545c64;
+    height: 400px;
+}
+.cover-content {
+    padding-top: 50%;
+    transform: translateY(-50%)
+}
+th {
+    visibility: collapse;
+}
 </style>

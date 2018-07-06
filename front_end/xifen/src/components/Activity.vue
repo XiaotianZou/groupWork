@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="activity">
-            <mu-tabs :value="activeTab" @change="handleTabChange" class="tab">
+            <mu-tabs :value="activeTab" @change="handleTabChange" class="tab" full-width>
                 <mu-tab value="0" title="全部活动"/>
                 <mu-tab value="1" title="参与的活动"/>
                 <mu-tab value="2" title="组织的活动"/>
@@ -222,8 +222,9 @@ export default {
 
 .activity {
     text-align: left;
-    padding-left: 40px;
-    padding-right: 40px;
+    width: 100%;
+    /* padding-left: 40px;
+    padding-right: 40px; */
 }
 
 .container {
