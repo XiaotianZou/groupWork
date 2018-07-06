@@ -1,70 +1,69 @@
 <template>
     <div>
         <div class="activity">
-            <mu-tabs :value="activeTab" @change="handleTabChange" class="tab" full-width>
+            <mu-tabs :value="activeTab" @change="handleTabChange" class="tab">
                 <mu-tab value="0" title="全部活动"/>
                 <mu-tab value="1" title="参与的活动"/>
                 <mu-tab value="2" title="组织的活动"/>
             </mu-tabs>
             <div style="height: 40px;"></div>
-            <div v-if="activeTab === '0'" v-for="activity of allAtyArr" class="container">
-                <mu-card style="width: 100%; max-width: 375px; margin: 0 auto;">
-                    <mu-card-media v-if="activity.mode == 2" title="已组织此活动">
-                        <img src="../assets/bg.jpg">
-                    </mu-card-media>
-                    <mu-card-media v-else-if="activity.mode == 1" title="已参加此活动">
-                        <img src="../assets/bg.jpg">
-                    </mu-card-media>
-                    <mu-card-media v-else>
-                        <img src="../assets/bg.jpg">
-                    </mu-card-media>
-                    <div class="txt">
-                        <i class="material-icons">textsms</i>
-                        <p>{{ activity.name }}</p>
-                    </div>
-                    <div class="txt">
-                        <i class="material-icons">place</i>
-                        <p>{{ activity.place }}</p>
-                    </div>
-                    <mu-float-button @click="detailActivity(activity)" mini class="demo-float-button detail-button" icon="arrow_forward"/>
-                    <mu-float-button v-if="activity.mode == 0" @click="addActivity(activity)" mini class="demo-float-button add-button" icon="check"/>
-                </mu-card>
-            </div>
-            <div v-if="activeTab === '1'" v-for="activity in tkinAtyArr" class="container">
-                <mu-card style="width: 100%; max-width: 375px; margin: 0 auto;">
-                    <mu-card-media>
-                        <img src="../assets/bg.jpg">
-                    </mu-card-media>
-                    <div class="txt">
-                        <i class="material-icons">textsms</i>
-                        <p>{{ activity.name }}</p>
-                    </div>
-                    <div class="txt">
-                        <i class="material-icons">place</i>
-                        <p>{{ activity.place }}</p>
-                    </div>
-                    <mu-float-button @click="detailActivity(activity)" mini class="demo-float-button detail-button" icon="arrow_forward"/>
-                </mu-card>
-            </div>
-            <div v-if="activeTab === '2'" v-for="activity in orgAtyArr" class="container">
-                <mu-card style="width: 100%; max-width: 375px; margin: 0 auto;">
-                    <mu-card-media>
-                        <img src="../assets/bg.jpg">
-                    </mu-card-media>
-                    <div class="txt">
-                        <i class="material-icons">textsms</i>
-                        <p>{{ activity.name }}</p>
-                    </div>
-                    <div class="txt">
-                        <i class="material-icons">place</i>
-                        <p>{{ activity.place }}</p>
-                    </div>
-                    <mu-float-button @click="detailActivity(activity)" mini class="demo-float-button detail-button" icon="arrow_forward"/>
-                </mu-card>
+            <div class="card-container">
+                <div v-if="activeTab === '0'" v-for="activity of allAtyArr" class="container">
+                    <mu-card style="width: 100%; max-width: 375px; margin: 0 auto;">
+                        <mu-card-media v-if="activity.mode == 2" title="已组织此活动">
+                            <img src="../assets/bg.jpg">
+                        </mu-card-media>
+                        <mu-card-media v-else-if="activity.mode == 1" title="已参加此活动">
+                            <img src="../assets/bg.jpg">
+                        </mu-card-media>
+                        <mu-card-media v-else>
+                            <img src="../assets/bg.jpg">
+                        </mu-card-media>
+                        <span class="card-title">{{ activity.name }}</span>
+                        <div class="location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>{{ activity.place }}</div>
+                        </div>
+                        <mu-card-actions>
+                            <mu-button class="muBtn" flat large @click="detailActivity(activity)">详情</mu-button>
+                            <mu-button class="muBtn" flat large v-if="activity.mode == 0" @click="addActivity(activity)">参加</mu-button>
+                        </mu-card-actions>
+                    </mu-card>
+                </div>
+                <div v-if="activeTab === '1'" v-for="activity in tkinAtyArr" class="container">
+                    <mu-card style="width: 100%; max-width: 375px; margin: 0 auto;">
+                        <mu-card-media>
+                            <img src="../assets/bg.jpg">
+                        </mu-card-media>
+                        <span class="card-title">{{ activity.name }}</span>
+                        <div class="location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>{{ activity.place }}</div>
+                        </div>
+                        <mu-card-actions>
+                            <mu-button class="muBtn" flat large @click="detailActivity(activity)">详情</mu-button>
+                        </mu-card-actions>
+                    </mu-card>
+                </div>
+                <div v-if="activeTab === '2'" v-for="activity in orgAtyArr" class="container">
+                    <mu-card style="width: 100%; max-width: 375px; margin: 0 auto;">
+                        <mu-card-media>
+                            <img src="../assets/bg.jpg">
+                        </mu-card-media>
+                        <span class="card-title">{{ activity.name }}</span>
+                        <div class="location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>{{ activity.place }}</div>
+                        </div>
+                        <mu-card-actions>
+                            <mu-button class="muBtn" flat large @click="detailActivity(activity)">详情</mu-button>
+                        </mu-card-actions>
+                    </mu-card>
+                </div>
             </div>
         </div>
-        <el-button @click="goBack" class="back-button" icon="el-icon-arrow-left"></el-button>
-        <el-button @click="createActivity" class="create-button" icon="el-icon-plus"></el-button>
+        <mu-button @click="goBack" class="back-button"><i class="fas fa-chevron-left"></i></mu-button>
+        <mu-button @click="createActivity" class="create-button"><i class="fas fa-plus-circle"></i></mu-button>
     </div>
 </template>
 
@@ -263,25 +262,33 @@ export default {
 }
 
 .create-button {
-    width: 48px;
-    height: 48px;
+    height: 96px;
     position: fixed;
-    top: 0px;
     right: 0px;
+    top: 0px;
     background-color: #7e57c2;
     border-radius: 0px;
     color: white;
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+    padding-right: 16px;
+    padding-left: 8px
 }
 
 .back-button {
-    width: 48px;
-    height: 48px;
+    height: 96px;
     position: fixed;
     left: 0px;
     top: 0px;
     background-color: #7e57c2;
     border-radius: 0px;
     color: white;
+    font-size: 42px;
+    display: flex;
+    align-items: center;
+    padding-left: 16px;
+    padding-right: 8px;
 }
 
 i {
@@ -289,26 +296,37 @@ i {
     vertical-align: baseline;
 }
 
-p {
-    display: inline;
-    line-height: 30px;
-    margin-left: 5px;
-    vertical-align: top;
-}
-
-.txt {
-    margin-top: 10px;
-    margin-left: 10px;
-    height: 30px;
-}
-
 .tab {
-    width: 300px;
     position: fixed;
     top: 0px;
-    left: 40px;
-    right: 40px;
+    margin-left: 46px;
+    margin-right: 48px;
+    height: 96px;
+    width: 640px;
 }
 
+.card-container {
+    padding: 30px;
+}
+
+.mu-card {
+    border-radius: 16px;
+    overflow: hidden;
+}
+.card-title {
+    font-size: 60px;
+    margin-left: 20px;
+    padding-right: 40px;
+    border-bottom: 1px solid gray;
+}
+.location {
+    margin-left: 20px;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+}
+.fa-map-marker-alt {
+    margin-right: 10px;
+}
 </style>
 
