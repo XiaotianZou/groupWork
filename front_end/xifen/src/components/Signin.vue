@@ -3,17 +3,17 @@
         <img class="logo" src='../assets/logo.jpg'/>
         <div class="container">
             <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="姓名" prop="username">
-                    <el-input v-model.number="ruleForm2.username"></el-input>
-                </el-form-item>
-                <el-form-item label="密码" prop="pass">
-                    <el-input type="password" v-model="ruleForm2.pass" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="submitForm('ruleForm2')">登录</el-button>
-                    <!-- <el-button @click="resetForm('ruleForm2')">重置</el-button> -->
-                    <el-button @click="register">注册</el-button>
-                </el-form-item>
+                <el-input
+                    placeholder="用户名"
+                    v-model.number="ruleForm2.username">
+                </el-input>
+                <el-input
+                    placeholder="密码"
+                    v-model.number="ruleForm2.pass"
+                    type="password">
+                </el-input>
+                <el-button type="primary" @click="submitForm('ruleForm2')">登录</el-button>
+                <el-button @click="register">注册</el-button>
             </el-form>
         </div>
     </div>
@@ -98,15 +98,12 @@ export default {
 }
 </script>
 
-<style scoped>
-.container {
-    margin-top:50px;
-    margin-right:50px;
-    text-align: center;
+<style>
+.el-input__inner {
+    width: 500px;
+    margin-top: 40px;
 }
-
-.logo {
-  width: 280px;
-  margin-top:30px;
+.el-button {
+    margin-top: 40px;
 }
 </style>

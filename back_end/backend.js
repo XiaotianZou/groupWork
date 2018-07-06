@@ -3,7 +3,7 @@ var app = express();
 
 
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017";
+var url = "mongodb://localhost:27000";
 var con;
 var userCollction;
 var activityCollction;
@@ -12,7 +12,7 @@ var activityCollction;
 MongoClient.connect(url, function(err, db) {
  	if (err) throw err;
     console.log('database set up');
-    con = db.db("test3");
+    con = db.db("SystemDesign");
     userCollction = con.collection("user");
     activityCollction = con.collection("activitity");
 });

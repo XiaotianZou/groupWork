@@ -13,6 +13,7 @@ import 'muse-ui/dist/muse-ui.css'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import store from './vuex/store'
+import 'lib-flexible'
 
 Vue.use(Vuex);
 Vue.config.productionTip = false
