@@ -1,6 +1,3 @@
-# xifen
-
-> xifen one page
 
 ## Build Setup
 
