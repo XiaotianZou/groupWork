@@ -45,6 +45,9 @@
 <script>
 export default {
   name: 'Signup',
+  created: function() {
+    this.$store.commit('isLogin', '')
+  },
   
   data() {
       let validateUsername = (rule, value, callback) => {
@@ -166,6 +169,7 @@ export default {
         this.$refs[formName].resetFields();
       },
       login() {
+        
           this.$router.push('/signin')
       },
 

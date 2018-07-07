@@ -80,9 +80,9 @@ export default {
             .get(url + params)
             .then(res => {
                 if (res.data.ok) {
-                    this.$store.commit('isLogin', res.data.data.id)
+                    this.$store.commit('isLogin', '')
                     if (this.$store.state.checkState == 'qiandao') {
-                        this.$router.push({name: 'QianDao', params: {uid: res.data.data.id}})
+                        this.$router.push({path: '/signin:' + res.data.data.id, params: {uid: res.data.data.id}})
                     }
                     else {
                         this.$router.push({name: 'Personal', params: {uid: res.data.data.id}})
