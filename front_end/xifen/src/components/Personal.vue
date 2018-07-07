@@ -80,7 +80,7 @@ export default {
     },
 
     created() {
-        this.$store.commit('isLogin', res.data.data.id)
+        this.$store.commit('isLogin', this.$route.params.uid)
         if (this.$store.state.isLogin == "") {
           this.$router.push('/signin')
       }
