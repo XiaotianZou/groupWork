@@ -11,48 +11,46 @@
             </div>
         </div>
         <div class="main-content">
-            <el-row class="tac">
-                <el-col :span="24" class="left">
-                    <div v-if="bottomNav == '0'">
-                        <el-table :data="tableData" stripe class="center">
-                            <el-table-column prop="label"></el-table-column>
-                            <el-table-column prop="value"></el-table-column>
-                        </el-table>
+            <div v-if="bottomNav == '0'">
+                <mu-data-table :columns="columns" :data="list" hideHeader stripe>
+                    <template slot-scope="scope">
+                        <td>{{scope.row.tag}}</td>
+                        <td>{{scope.row.content}}</td>
+                    </template>
+                </mu-data-table>
+            </div>
+            <div v-if="bottomNav == '1'" v-for="activity in orgAtyArr" class="container">
+                <mu-card raised>
+                    <mu-card-media>
+                        <img src="../assets/bg.jpg">
+                    </mu-card-media>
+                    <span class="card-title">{{ activity.name }}</span>
+                    <div class="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>{{ activity.place }}</div>
                     </div>
-                    <div v-if="bottomNav == '1'" v-for="activity in orgAtyArr" class="container">
-                        <mu-card raised>
-                            <mu-card-media>
-                                <img src="../assets/bg.jpg">
-                            </mu-card-media>
-                            <span class="card-title">{{ activity.name }}</span>
-                            <div class="location">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <div>{{ activity.place }}</div>
-                            </div>
-                            <mu-card-actions>
-                                <mu-button class="muBtn" flat large @click="detailActivity(activity)">详情</mu-button>
-                            </mu-card-actions>
-                        </mu-card>
+                    <mu-card-actions>
+                        <mu-button class="muBtn" flat large @click="detailActivity(activity)">详情</mu-button>
+                    </mu-card-actions>
+                </mu-card>
+            </div>
+            <div v-if="bottomNav == '2'" v-for="activity in tkinAtyArr" class="container">
+                <mu-card raised>
+                    <mu-card-media>
+                        <img src="../assets/bg.jpg">
+                    </mu-card-media>
+                    <span class="card-title">{{ activity.name }}</span>
+                    <div class="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>{{ activity.place }}</div>
                     </div>
-                    <div v-if="bottomNav == '2'" v-for="activity in tkinAtyArr" class="container">
-                        <mu-card raised>
-                            <mu-card-media>
-                                <img src="../assets/bg.jpg">
-                            </mu-card-media>
-                            <span class="card-title">{{ activity.name }}</span>
-                            <div class="location">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <div>{{ activity.place }}</div>
-                            </div>
-                            <mu-card-actions>
-                                <mu-button class="muBtn" flat large @click="detailActivity(activity)">详情</mu-button>
-                            </mu-card-actions>
-                        </mu-card>
-                    </div>
-                    <div v-if="bottomNav == '3'">{{toAllActivity()}}</div>
-                    <div v-if="bottomNav == '4'">{{toCreate()}}</div>
-                </el-col>
-            </el-row>
+                    <mu-card-actions>
+                        <mu-button class="muBtn" flat large @click="detailActivity(activity)">详情</mu-button>
+                    </mu-card-actions>
+                </mu-card>
+            </div>
+            <div v-if="bottomNav == '3'">{{toAllActivity()}}</div>
+            <div v-if="bottomNav == '4'">{{toCreate()}}</div>
             <mu-bottom-nav :value="bottomNav" shift @change="handleChange" class="bottom-nav">
                 <mu-bottom-nav-item value="0" title="个人中心" icon="perm_identity"/>
                 <mu-bottom-nav-item value="1" title="组织活动" icon="star_rate"/>
@@ -73,9 +71,13 @@ export default {
             bottomNav: '0',
             uid: '',
             name: '',
-            tableData: [],
             orgAtyArr: [],
             tkinAtyArr: [],
+            columns: [
+                { title: 'tag', name: 'tag', width: 207, align: 'right'},
+                { title: 'name', name: 'content', width: 207}
+            ],
+            list: [],
         }
     },
 
@@ -118,10 +120,10 @@ export default {
                     if (res.data.ok) {
                         this.tableData = []
                         let user = res.data.data
-                        this.tableData.push({label: '姓名', value: user.name})
-                        this.tableData.push({label: '学号', value: user.id})
-                        this.tableData.push({label: '手机', value: user.phone})
-                        this.tableData.push({label: '邮箱', value: user.mail})
+                        this.list.push({tag: '姓名', content: user.name})
+                        this.list.push({tag: '学号', content: user.id})
+                        this.list.push({tag: '手机', content: user.phone})
+                        this.list.push({tag: '邮箱', content: user.mail})
                         this.uid = user.id
                         this.name = user.name
                     }
@@ -202,6 +204,7 @@ export default {
 .bottom-nav {
     position: fixed;
     bottom: 0;
+    width: 100%;
 }
 
 .center {
@@ -282,5 +285,8 @@ p {
 }
 .fa-map-marker-alt {
     margin-right: 10px;
+}
+.table {
+    width: 100%
 }
 </style>

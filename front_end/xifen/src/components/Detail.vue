@@ -1,58 +1,44 @@
 <template>
     <div>
-        <mu-card style="width: 100%; max-width: 375px; margin: 0 auto; padding-bottom: 20px;">
-        <!-- <mu-card-media title="Image Title" sub-title="Image Sub Title"> -->
-        <mu-card-media>
-            <img src="../assets/bg.jpg">
-        </mu-card-media>
-            <div class="container">
-                <el-form :model="ruleForm2" status-icon ref="ruleForm2" label-width="100px" class="demo-ruleForm">
-                    <el-form-item label="活动名称" prop="name">
-                        <el-input v-model="ruleForm2.name" disabled=true></el-input>
-                    </el-form-item>
-                    <el-form-item label="活动地点" prop="location">
-                        <el-input v-model="ruleForm2.location" disabled=true></el-input>
-                    </el-form-item>
-                    <el-form-item label="报名开始" prop="addStartTime">
-                        <el-date-picker v-model="ruleForm2.addStartTime" type="datetime" placeholder="选择日期时间" disabled=true></el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="报名结束" prop="addEndTime">
-                        <el-date-picker v-model="ruleForm2.addEndTime" type="datetime" placeholder="选择日期时间" disabled=true></el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="活动开始" prop="activityStartTime">
-                        <el-date-picker v-model="ruleForm2.activityStartTime" type="datetime" placeholder="选择日期时间" disabled=true></el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="活动结束" prop="activityEndTime">
-                        <el-date-picker v-model="ruleForm2.activityEndTime" type="datetime" placeholder="选择日期时间" disabled=true></el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="活动简介" prop="info">
-                        <el-input type="textarea" :rows="3" placeholder="请输入内容" v-model="ruleForm2.info" disabled=true></el-input>
-                    </el-form-item>
-                    <el-form-item label="参加成员" prop="member">
-                        <div v-for="iter in memberArr">
-                            <mu-card class="card">
-                                    <img class="pic" src="../assets/avatar.jpg">
-                               
-                                    <p class="iterId">学号：{{ iter.id }}</p>
-                                    <p class="iterSignin">状态：{{ iter.signin  }}</p>
-                               
-                            </mu-card>
+        <img src="../assets/bg.jpg">
+        <div>
+            <mu-data-table :columns="columns" :data="list" hideHeader stripe>
+                <template slot-scope="scope">
+                    <td>{{scope.row.tag}}</td>
+                    <td>{{scope.row.content}}</td>
+                </template>
+            </mu-data-table>
+            <mu-list toggle-nested>
+                <mu-list-item button :ripple="false" nested :open="open === 'member'" @toggle-nested="open = arguments[0] ? 'member' : ''">
+                    <!-- <mu-list-item-title>参与人员 : {{this.memberArr.length}}</mu-list-item-title> -->
+                    <div id="member-list-button">
+                        <mu-button flat color="primary" large>参与人员 : {{this.memberArr.length}}</mu-button>
+                    </div>
+                    <mu-list-item button :ripple="false" slot="nested">
+                        <div id="member-item">
+                            <div id="member-id">学号</div>
+                            <div id="attendance-status">状态</div>
                         </div>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button v-if="mode == 0" type="primary" @click="takeIn()">参加</el-button>
-                        <el-button v-if="mode == 0" @click="goBack">返回</el-button>
-                        <el-button v-if="mode == 1" type="primary" disabled>已参加</el-button>
-                        <el-button v-if="mode == 1" @click="goBack">返回</el-button>
-                        <el-button v-if="mode == 2" type="primary">修改</el-button>
-                        <el-button v-if="mode == 2">重置</el-button>
-                        <!-- <el-button v-if="mode == 2" type="primary" @click="submitForm('ruleForm2')">修改</el-button>
-                        <el-button v-if="mode == 2" @click="resetForm('ruleForm2')">重置</el-button> -->
-                        <!-- <el-button @click="register">注册</el-button> -->
-                    </el-form-item>
-                </el-form>
-            </div>
-        </mu-card>
+                    </mu-list-item>
+                    <mu-list-item button :ripple="false" slot="nested" v-for="iter in memberArr">
+                        <div id="member-item">
+                            <div id="item-left"><div id="member-id">{{iter.id}}</div></div>
+                            <div id="item-right"><div id="attendance-status">
+                                <i class="far fa-check-circle" v-if="iter.signin"></i>
+                                <i class="far fa-times-circle" v-else></i>
+                            </div></div>
+                        </div>
+                    </mu-list-item>
+                </mu-list-item>
+            </mu-list>
+            <el-button v-if="mode == 0" type="primary" @click="takeIn()">参加</el-button>
+            <el-button v-if="mode == 0" @click="goBack">返回</el-button>
+            <el-button v-if="mode == 1" type="primary" disabled>已参加</el-button>
+            <el-button v-if="mode == 1" @click="goBack">返回</el-button>
+            <el-button v-if="mode == 2" type="primary">修改</el-button>
+            <el-button v-if="mode == 2">重置</el-button>
+                    
+        </div>
         <i class="material-icons back-button" @click="goBack">arrow_back_ios</i>
         <el-button type="text" @click="open" v-if="mode == 2">生成签到二维码</el-button>
         <el-dialog
@@ -69,63 +55,6 @@ export default {
   name: 'Detail',
   
   data() {
-    //   let validateName = (rule, value, callback) => {
-    //     if (value === '') {
-    //       callback(new Error('请输入活动名称'));
-    //     } 
-    //     else {
-    //       callback();
-    //     }
-    //   };
-    //   let validateLocation = (rule, value, callback) => {
-    //     if (value === '') {
-    //       callback(new Error('请输入活动地点'));
-    //     } 
-    //     else {
-    //       callback();
-    //     }
-    //   };
-    //   let validateInfo = (rule, value, callback) => {
-    //     if (value === '') {
-    //       callback(new Error('活动简介不能为空'));
-    //     } 
-    //     else {
-    //       callback();
-    //     }
-    //   };
-    //   let validateAddStartTime = (rule, value, callback) => {
-    //       if (value === '') {
-    //         callback(new Error('报名开始时间不能为空'));
-    //       } 
-    //       else {
-    //         callback();
-    //       }
-    //   };
-    //   let validateAddEndtTime = (rule, value, callback) => {
-    //       if (value === '') {
-    //         callback(new Error('报名结束时间不能为空'));
-    //       } 
-    //       else {
-    //         callback();
-    //       }
-    //   };
-    //   let validateActivityStartTime = (rule, value, callback) => {
-    //       if (value === '') {
-    //         callback(new Error('活动开始时间不能为空'));
-    //       } 
-    //       else {
-    //         callback();
-    //       }
-    //   };
-    //   let validateActivityEndTime = (rule, value, callback) => {
-    //       if (value === '') {
-    //         callback(new Error('活动结束时间不能为空'));
-    //       } 
-    //       else {
-    //         callback();
-    //       }
-    //   };
-
       return {
         mode: 0,
         aid: '',
@@ -142,29 +71,11 @@ export default {
             activityEndTime: '',
         },
         show: false,
-        // rules2: {
-        //     name: [
-        //         { validator: validateName, trigger: 'blur' }
-        //     ],
-        //     location: [
-        //         { validator: validateLocation, trigger: 'blur' }
-        //     ],
-        //     info: [
-        //         { validator: validateInfo, trigger: 'blur' }
-        //     ],
-        //     addStartTime: [
-        //         { validator: validateAddStartTime, trigger: 'blur' }
-        //     ],
-        //     addEndTime: [
-        //         { validator: validateAddEndtTime, trigger: 'blur' }
-        //     ],
-        //     activityStartTime: [
-        //         { validator: validateActivityStartTime, trigger: 'blur' }
-        //     ],
-        //     activityEndTime: [
-        //         { validator: validateActivityEndTime, trigger: 'blur' }
-        //     ],
-        // }
+        columns: [
+            { title: 'tag', width: 150, name: 'tag' },
+            { title: 'name', name: 'content', width: 264 }
+        ],
+        list: [],
       };
   },
 
@@ -316,6 +227,14 @@ props: {
                     this.ruleForm2.activityStartTime = activity.signup_start_time
                     this.ruleForm2.activityEndTime = activity.signup_end_time
                     this.ruleForm2.member.push(activity.joins)
+                    this.list.push({tag: '活动名称', content: activity.name});
+                    this.list.push({tag: '活动地点', content: activity.place});
+                    this.list.push({tag: '报名开始', content: activity.signup_start_time});
+                    this.list.push({tag: '报名结束', content: activity.signup_end_time});
+                    this.list.push({tag: '活动开始', content: activity.start_time});
+                    this.list.push({tag: '活动结束', content: activity.end_time});
+                    this.list.push({tag: '活动简介', content: activity.info});
+                    // this.list.push({tag: '参加成员', content: });
                     
                     for (var i = 0; i < this.ruleForm2.member[0].length; i++) {
                         this.memberArr.push(this.ruleForm2.member[0][i])
@@ -383,5 +302,38 @@ props: {
     position: fixed;
     left: 10px;
     top: 10px;
+}
+#member-list-button {
+    width: 100%
+}
+#member-item {
+    width: 100%;
+    margin-left: -18px;
+    display: flex;
+    justify-content: center;
+}
+#item-left {
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+}
+#item-right {
+    width: 50%;
+    display: flex;
+    justify-content: flex-start;
+}
+#member-id {
+    font-size: 40px;
+    margin-right: 40px;
+}
+#attendance-status {
+    font-size: 40px;
+    margin-left: 40px;
+}
+.fa-check-circle {
+    color: #29b6f6;
+}
+.fa-times-circle {
+    color: red;
 }
 </style>

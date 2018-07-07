@@ -1,25 +1,21 @@
 <template>
     <div>
-        <mu-card style="width: 100%; max-width: 375px; margin: 0 auto; padding-bottom: 20px;">
-            <mu-card-media>
-                <img src="../assets/bg.jpg">
-            </mu-card-media>
-            <div class="container">
-                <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
-                    <mu-text-field v-model="ruleForm2.name" label="活动名称" prop="name" label-float ></mu-text-field><br/>
-                    <mu-text-field v-model="ruleForm2.location" label="活动地点" prop="location" label-float></mu-text-field><br/>
-                    <mu-date-input v-model="ruleForm2.addStartTime" label="报名开始" prop="addStartTime" container="dialog" label-float no-display actions></mu-date-input>
-                    <mu-date-input v-model="ruleForm2.addEndTime" label="报名结束" prop="addEndTime" container="dialog" label-float no-display actions></mu-date-input>
-                    <mu-date-input v-model="ruleForm2.activityStartTime" label="活动开始" prop="activityStartTime" container="dialog" label-float no-display actions></mu-date-input>
-                    <mu-date-input v-model="ruleForm2.activityEndTime" label="活动结束" prop="activityEndTime" container="dialog" label-float no-display actions></mu-date-input>
-                    <mu-text-field v-model="ruleForm2.info" label="活动简介" prop="info" label-float multi-line :rows="2" :rows-max="5"></mu-text-field><br/>
-                    <el-form-item>
-                        <el-button type="primary" @click="submitForm('ruleForm2')">创建</el-button>
-                        <el-button @click="resetForm('ruleForm2')">重置</el-button>
-                    </el-form-item>
-                </el-form>
-            </div>
-        </mu-card>
+        <img src="../assets/bg.jpg">
+        <div class="container">
+            <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
+                <mu-text-field v-model="ruleForm2.name" label="活动名称" prop="name" label-float ></mu-text-field><br/>
+                <mu-text-field v-model="ruleForm2.location" label="活动地点" prop="location" label-float></mu-text-field><br/>
+                <mu-date-input v-model="ruleForm2.addStartTime" label="报名开始" prop="addStartTime" container="dialog" label-float no-display actions></mu-date-input>
+                <mu-date-input v-model="ruleForm2.addEndTime" label="报名结束" prop="addEndTime" container="dialog" label-float no-display actions></mu-date-input>
+                <mu-date-input v-model="ruleForm2.activityStartTime" label="活动开始" prop="activityStartTime" container="dialog" label-float no-display actions></mu-date-input>
+                <mu-date-input v-model="ruleForm2.activityEndTime" label="活动结束" prop="activityEndTime" container="dialog" label-float no-display actions></mu-date-input>
+                <mu-text-field v-model="ruleForm2.info" label="活动简介" prop="info" label-float multi-line :rows="2" :rows-max="5"></mu-text-field><br/>
+                <el-form-item>
+                    <el-button type="primary" @click="submitForm('ruleForm2')">创建</el-button>
+                    <el-button @click="resetForm('ruleForm2')">重置</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
         <i class="material-icons back-button" @click="goBack">arrow_back_ios</i>
     </div>
 </template>
