@@ -3,15 +3,8 @@
         <img class="logo" src='../assets/logo.jpg'/>
         <div class="container">
             <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
-                <el-input
-                    placeholder="用户名"
-                    v-model.number="ruleForm2.username">
-                </el-input>
-                <el-input
-                    placeholder="密码"
-                    v-model.number="ruleForm2.pass"
-                    type="password">
-                </el-input>
+                <mu-text-field color="#FFFFFF" label-float v-model.number="ruleForm2.username" label="用户名" icon="account_circle"></mu-text-field><br/>
+                <mu-text-field label-float v-model.number="ruleForm2.pass" type="password" label="密码" icon="locked" ></mu-text-field><br/>
                 <el-button type="primary" @click="submitForm('ruleForm2')">登录</el-button>
                 <el-button @click="register">注册</el-button>
             </el-form>
@@ -53,7 +46,8 @@ export default {
             pass: [
                 { validator: validatePass, trigger: 'blur' }
             ],
-        }
+        },
+        visibility: false
       };
   },
   created: function() {
@@ -102,9 +96,8 @@ export default {
 </script>
 
 <style>
-.el-input__inner {
-    width: 500px;
-    margin-top: 40px;
+.logo {
+    margin-bottom: 20px;
 }
 .el-button {
     margin-top: 40px;
