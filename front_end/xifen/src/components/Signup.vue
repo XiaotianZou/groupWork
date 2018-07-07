@@ -186,6 +186,7 @@ export default {
             .then(res => {
                 if (res.data.ok) {
                     this.$router.push({name: 'Personal', params: {uid: res.data.data.id}})
+                    this.$store.commit('isLogin', res.data.data.id)
                 }
                 else {
                     alert('fail to register')
