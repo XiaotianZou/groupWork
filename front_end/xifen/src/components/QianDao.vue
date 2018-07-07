@@ -36,7 +36,8 @@ export default {
 
   created() {
     if (this.$store.state.isLogin == "") {
-          this.$router.push('/signup')
+          this.$store.commit('checkState', 'qiandao')
+          this.$router.push('/signin')
       }
     let uid = this.$store.state.isLogin;
     let url = '/api/getOneUser';

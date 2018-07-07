@@ -6,7 +6,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     state: {
         author: "noOne",
-        isLogin: ""
+        isLogin: "",
+        checkState: ""
     },
     mutations: {
         newAuthor(state, msg) {
@@ -15,6 +16,10 @@ const store = new Vuex.Store({
         isLogin(state, msg) {
             state.isLogin = msg;
             localStorage.setItem("isLogin", msg);
+        },
+        checkState(state, msg) {
+            state.checkState = msg;
+            localStorage.setItem("checkState", msg);
         }
     }
 })
