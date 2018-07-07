@@ -80,8 +80,9 @@ export default {
     },
 
     created() {
-        this.$store.commit('isLogin', this.$route.params.uid)
-        if (this.$store.state.isLogin == "") {
+        if (this.$store.state.isLogin == "")
+            this.$store.commit('isLogin', this.$route.params.uid)
+        if (this.$store.state.isLogin == "" && this.$route.params.uid == null) {
           this.$router.push('/signin')
       }
         if (this.$route.params.bottomNav)
