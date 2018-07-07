@@ -1,15 +1,15 @@
 <template>
     <div>
         <div class="activity">
-            <mu-tabs :value="activeTab" @change="handleTabChange" class="tab">
-                <mu-tab value="0" title="全部活动"/>
-                <mu-tab value="1" title="参与的活动"/>
-                <mu-tab value="2" title="组织的活动"/>
+            <mu-tabs :value.sync="activeTab"  class="tab" color="#7e57c2" full-width>
+                <mu-tab>全部活动</mu-tab>
+                <mu-tab>参与的活动</mu-tab>
+                <mu-tab>组织的活动</mu-tab>
             </mu-tabs>
             <div style="height: 40px;"></div>
             <div class="card-container">
-                <div v-if="activeTab === '0'" v-for="activity of allAtyArr" class="container">
-                    <mu-card style="width: 100%; max-width: 375px; margin: 0 auto;">
+                <div v-if="activeTab === 0" v-for="activity of allAtyArr" class="container">
+                    <mu-card raised style="width: 100%; max-width: 375px; margin: 0 auto;">
                         <mu-card-media v-if="activity.mode == 2" title="已组织此活动">
                             <img src="../assets/bg.jpg">
                         </mu-card-media>
@@ -30,8 +30,8 @@
                         </mu-card-actions>
                     </mu-card>
                 </div>
-                <div v-if="activeTab === '1'" v-for="activity in tkinAtyArr" class="container">
-                    <mu-card style="width: 100%; max-width: 375px; margin: 0 auto;">
+                <div v-if="activeTab === 1" v-for="activity in tkinAtyArr" class="container">
+                    <mu-card raised style="width: 100%; max-width: 375px; margin: 0 auto;">
                         <mu-card-media>
                             <img src="../assets/bg.jpg">
                         </mu-card-media>
@@ -45,8 +45,8 @@
                         </mu-card-actions>
                     </mu-card>
                 </div>
-                <div v-if="activeTab === '2'" v-for="activity in orgAtyArr" class="container">
-                    <mu-card style="width: 100%; max-width: 375px; margin: 0 auto;">
+                <div v-if="activeTab === 2" v-for="activity in orgAtyArr" class="container">
+                    <mu-card raised style="width: 100%; max-width: 375px; margin: 0 auto;">
                         <mu-card-media>
                             <img src="../assets/bg.jpg">
                         </mu-card-media>
@@ -62,8 +62,8 @@
                 </div>
             </div>
         </div>
-        <mu-button @click="goBack" class="back-button"><i class="fas fa-chevron-left"></i></mu-button>
-        <mu-button @click="createActivity" class="create-button"><i class="fas fa-plus-circle"></i></mu-button>
+        <button @click="goBack" class="back-button"><i class="fas fa-chevron-left"></i></button>
+        <button @click="createActivity" class="create-button"><i class="fas fa-plus-circle"></i></button>
     </div>
 </template>
 
@@ -74,7 +74,7 @@ export default {
 
   data () {
     return {
-      activeTab: '0',
+      activeTab: 0,
       allAtyArr: [],
       orgAtyArr: [],
       tkinAtyArr: [],
@@ -219,7 +219,7 @@ export default {
 </script>
 
 
-<style >
+<style scoped>
 #activity {
     font-size: 20px;
 }
@@ -269,11 +269,12 @@ export default {
     background-color: #7e57c2;
     border-radius: 0px;
     color: white;
-    font-size: 40px;
+    font-size: 36px;
     display: flex;
     align-items: center;
     padding-right: 16px;
-    padding-left: 8px
+    padding-left: 8px;
+    border: none;
 }
 
 .back-button {
@@ -289,6 +290,7 @@ export default {
     align-items: center;
     padding-left: 16px;
     padding-right: 8px;
+    border: none;
 }
 
 i {
@@ -302,7 +304,7 @@ i {
     margin-left: 46px;
     margin-right: 48px;
     height: 96px;
-    width: 640px;
+    width: 644px;
 }
 
 .card-container {

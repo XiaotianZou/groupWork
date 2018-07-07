@@ -6,31 +6,16 @@
             </mu-card-media>
             <div class="container">
                 <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
-                    <el-form-item label="活动名称" prop="name">
-                        <el-input v-model="ruleForm2.name"></el-input>
-                    </el-form-item>
-                    <el-form-item label="活动地点" prop="location">
-                        <el-input v-model="ruleForm2.location"></el-input>
-                    </el-form-item>
-                    <el-form-item label="报名开始" prop="addStartTime">
-                        <el-date-picker v-model="ruleForm2.addStartTime" type="datetime"></el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="报名结束" prop="addEndTime">
-                        <el-date-picker v-model="ruleForm2.addEndTime" type="datetime"></el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="活动开始" prop="activityStartTime">
-                        <el-date-picker v-model="ruleForm2.activityStartTime" type="datetime"></el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="活动结束" prop="activityEndTime">
-                        <el-date-picker v-model="ruleForm2.activityEndTime" type="datetime"></el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="活动简介" prop="info">
-                        <el-input type="textarea" :rows="3" v-model="ruleForm2.info"></el-input>
-                    </el-form-item>
+                    <mu-text-field v-model="ruleForm2.name" label="活动名称" prop="name" label-float ></mu-text-field><br/>
+                    <mu-text-field v-model="ruleForm2.location" label="活动地点" prop="location" label-float></mu-text-field><br/>
+                    <mu-date-input v-model="ruleForm2.addStartTime" label="报名开始" prop="addStartTime" container="dialog" label-float no-display actions></mu-date-input>
+                    <mu-date-input v-model="ruleForm2.addEndTime" label="报名结束" prop="addEndTime" container="dialog" label-float no-display actions></mu-date-input>
+                    <mu-date-input v-model="ruleForm2.activityStartTime" label="活动开始" prop="activityStartTime" container="dialog" label-float no-display actions></mu-date-input>
+                    <mu-date-input v-model="ruleForm2.activityEndTime" label="活动结束" prop="activityEndTime" container="dialog" label-float no-display actions></mu-date-input>
+                    <mu-text-field v-model="ruleForm2.info" label="活动简介" prop="info" label-float multi-line :rows="2" :rows-max="5"></mu-text-field><br/>
                     <el-form-item>
                         <el-button type="primary" @click="submitForm('ruleForm2')">创建</el-button>
                         <el-button @click="resetForm('ruleForm2')">重置</el-button>
-                        <!-- <el-button @click="register">注册</el-button> -->
                     </el-form-item>
                 </el-form>
             </div>

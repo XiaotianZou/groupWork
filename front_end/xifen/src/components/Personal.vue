@@ -20,7 +20,7 @@
                         </el-table>
                     </div>
                     <div v-if="bottomNav == '1'" v-for="activity in orgAtyArr" class="container">
-                        <mu-card>
+                        <mu-card raised>
                             <mu-card-media>
                                 <img src="../assets/bg.jpg">
                             </mu-card-media>
@@ -35,7 +35,7 @@
                         </mu-card>
                     </div>
                     <div v-if="bottomNav == '2'" v-for="activity in tkinAtyArr" class="container">
-                        <mu-card>
+                        <mu-card raised>
                             <mu-card-media>
                                 <img src="../assets/bg.jpg">
                             </mu-card-media>
@@ -194,7 +194,7 @@ export default {
 
 .container {
     margin-bottom: 5px;
-    padding: 15px;
+    padding: 30px;
 }
 
 .bottom-nav {
