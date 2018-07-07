@@ -10,7 +10,7 @@
                 </div>
             </div>
         </div>
-        <div>
+        <div class="main-content">
             <el-row class="tac">
                 <el-col :span="24" class="left">
                     <div v-if="bottomNav == '0'">
@@ -24,15 +24,14 @@
                             <mu-card-media>
                                 <img src="../assets/bg.jpg">
                             </mu-card-media>
-                            <div class="txt">
-                                <i class="material-icons">textsms</i>
-                                <p>{{ activity.name }}</p>
+                            <span class="card-title">{{ activity.name }}</span>
+                            <div class="location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div>{{ activity.place }}</div>
                             </div>
-                            <div class="txt">
-                                <i class="material-icons">place</i>
-                                <p>{{ activity.place }}</p>
-                            </div>
-                            <mu-float-button @click="detailActivity(activity)" mini class="demo-float-button detail-button" icon="arrow_forward"/>
+                            <mu-card-actions>
+                                <mu-button class="muBtn" flat large @click="detailActivity(activity)">详情</mu-button>
+                            </mu-card-actions>
                         </mu-card>
                     </div>
                     <div v-if="bottomNav == '2'" v-for="activity in tkinAtyArr" class="container">
@@ -40,15 +39,14 @@
                             <mu-card-media>
                                 <img src="../assets/bg.jpg">
                             </mu-card-media>
-                            <div class="txt">
-                                <i class="material-icons">textsms</i>
-                                <p>{{ activity.name }}</p>
+                            <span class="card-title">{{ activity.name }}</span>
+                            <div class="location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div>{{ activity.place }}</div>
                             </div>
-                            <div class="txt">
-                                <i class="material-icons">place</i>
-                                <p>{{ activity.place }}</p>
-                            </div>
-                            <mu-float-button @click="detailActivity(activity)" mini class="demo-float-button detail-button" icon="arrow_forward"/>
+                            <mu-card-actions>
+                                <mu-button class="muBtn" flat large @click="detailActivity(activity)">详情</mu-button>
+                            </mu-card-actions>
                         </mu-card>
                     </div>
                     <div v-if="bottomNav == '3'">{{toAllActivity()}}</div>
@@ -201,7 +199,7 @@ export default {
 
 .bottom-nav {
     position: fixed;
-    bottom: 15px;
+    bottom: 0;
 }
 
 .center {
@@ -250,12 +248,37 @@ p {
 .cover {
     background-color: #545c64;
     height: 400px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 5;
 }
 .cover-content {
     padding-top: 50%;
     transform: translateY(-50%)
 }
-th {
-    visibility: collapse;
+.main-content {
+    margin-top: 400px;
+    z-index: 4;
+    padding-bottom: 110px;
+}
+.mu-card {
+    border-radius: 16px;
+    overflow: hidden;
+}
+.card-title {
+    font-size: 60px;
+    margin-left: 20px;
+    padding-right: 40px;
+    border-bottom: 1px solid gray;
+}
+.location {
+    margin-left: 20px;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+}
+.fa-map-marker-alt {
+    margin-right: 10px;
 }
 </style>

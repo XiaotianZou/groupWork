@@ -219,7 +219,7 @@ export default {
 </script>
 
 
-<style scoped>
+<style >
 #activity {
     font-size: 20px;
 }
