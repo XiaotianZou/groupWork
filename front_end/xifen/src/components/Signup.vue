@@ -3,38 +3,38 @@
         <img class="logo" src='../assets/logo.jpg'/>
         <div class="container">
             <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
-                <el-input
+                <mu-text-field label-float
                   prop="username"
-                  placeholder="姓名"
+                  label="姓名"
                   v-model="ruleForm2.username">
-                </el-input>
-                <el-input
+                </mu-text-field>
+                <mu-text-field label-float
                   prop="sid"
-                  placeholder="学号"
+                  label="学号"
                   v-model.number="ruleForm2.sid">
-                </el-input>
-                <el-input
+                </mu-text-field>
+                <mu-text-field label-float
                   prop="pass"
-                  placeholder="密码"
+                  label="密码"
                   type="password" 
                   v-model="ruleForm2.pass">
-                </el-input>
-                <el-input
+                </mu-text-field>
+                <mu-text-field label-float
                   prop="checkPass"
-                  placeholder="确认密码"
+                  label="确认密码"
                   type="password" 
                   v-model="ruleForm2.checkPass">
-                </el-input>
-                <el-input
+                </mu-text-field>
+                <mu-text-field label-float
                   prop="phone"
-                  placeholder="手机"
+                  label="手机"
                   v-model.number="ruleForm2.phone">
-                </el-input>
-                <el-input
+                </mu-text-field>
+                <mu-text-field label-float
                   prop="email"
-                  placeholder="邮箱"
+                  label="邮箱"
                   v-model="ruleForm2.email">
-                </el-input>
+                </mu-text-field><br />
                 <el-button type="primary" @click="submitForm('ruleForm2')">注册</el-button>
                 <el-button @click="login">登录</el-button>
             </el-form>

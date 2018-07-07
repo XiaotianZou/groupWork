@@ -3,7 +3,7 @@
         <img class="logo" src='../assets/logo.jpg'/>
         <div class="container">
             <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
-                <mu-text-field color="#FFFFFF" label-float v-model.number="ruleForm2.username" label="用户名" icon="account_circle"></mu-text-field><br/>
+                <mu-text-field label-float v-model.number="ruleForm2.username" label="用户名" icon="account_circle"></mu-text-field><br/>
                 <mu-text-field label-float v-model.number="ruleForm2.pass" type="password" label="密码" icon="locked" ></mu-text-field><br/>
                 <el-button type="primary" @click="submitForm('ruleForm2')">登录</el-button>
                 <el-button @click="register">注册</el-button>
@@ -101,5 +101,6 @@ export default {
 }
 .el-button {
     margin-top: 40px;
+    margin-bottom: 80px;
 }
 </style>
