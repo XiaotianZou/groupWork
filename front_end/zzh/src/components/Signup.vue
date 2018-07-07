@@ -3,40 +3,29 @@
         <img class="logo" src='../assets/logo.jpg'/>
         <div class="container">
             <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
-                <mu-text-field label-float
-                  prop="username"
-                  label="姓名"
-                  v-model="ruleForm2.username">
-                </mu-text-field>
-                <mu-text-field label-float
-                  prop="sid"
-                  label="学号"
-                  v-model.number="ruleForm2.sid">
-                </mu-text-field>
-                <mu-text-field label-float
-                  prop="pass"
-                  label="密码"
-                  type="password" 
-                  v-model="ruleForm2.pass">
-                </mu-text-field>
-                <mu-text-field label-float
-                  prop="checkPass"
-                  label="确认密码"
-                  type="password" 
-                  v-model="ruleForm2.checkPass">
-                </mu-text-field>
-                <mu-text-field label-float
-                  prop="phone"
-                  label="手机"
-                  v-model.number="ruleForm2.phone">
-                </mu-text-field>
-                <mu-text-field label-float
-                  prop="email"
-                  label="邮箱"
-                  v-model="ruleForm2.email">
-                </mu-text-field><br />
-                <el-button type="primary" @click="submitForm('ruleForm2')">注册</el-button>
-                <el-button @click="login">登录</el-button>
+                <el-form-item label="姓名" prop="username">
+                    <el-input v-model="ruleForm2.username"></el-input>
+                </el-form-item>
+                <el-form-item label="学号  " prop="sid">
+                    <el-input v-model.number="ruleForm2.sid"></el-input>
+                </el-form-item>
+                <el-form-item label="密码" prop="pass">
+                    <el-input type="password" v-model="ruleForm2.pass" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="确认密码" prop="checkPass">
+                    <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="手机" prop="phone">
+                    <el-input v-model.number="ruleForm2.phone"></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱" prop="email">
+                    <el-input v-model="ruleForm2.email"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="submitForm('ruleForm2')">注册</el-button>
+                    <!-- <el-button @click="resetForm('ruleForm2')">重置</el-button> -->
+                    <el-button @click="login">登录</el-button>
+                </el-form-item>
             </el-form>
         </div>
     </div>
@@ -196,5 +185,14 @@ export default {
 </script>
 
 <style scoped>
+.container {
+    margin-top:50px;
+    margin-right:50px;
+    text-align: left;
+}
 
+.logo {
+  width: 280px;
+  margin-top:30px;
+}
 </style>
