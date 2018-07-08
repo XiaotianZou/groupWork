@@ -113,7 +113,7 @@ props: {
           this.show = true;
           this.$nextTick(function(){
               //QRCode.toCanvas(document.getElementById('code'), 'www.baidu.com');
-                QRCode.toCanvas(document.getElementById('code'), 'http://139.199.59.246:3000/qiandao/' + this.$route.params.aid);
+                QRCode.toCanvas(document.getElementById('code'), 'http://139.199.59.246:5000/qiandao/' + this.$route.params.aid);
           })
          
       },
